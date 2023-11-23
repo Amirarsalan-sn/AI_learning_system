@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login as log_in, logout as log_out
+from django.contrib.auth import authenticate, logout as log_out
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .serializers import SignupSerializer, UserSerializer, LoginSerializer
 # Create your views here.
@@ -38,7 +39,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             """We are reterving the token for authenticated user."""
-            token = Token.objects.get(user=user)
+            token, created = Token.objects.get_or_create(user=user)
             response = {
                 "status": status.HTTP_200_OK,
                 "message": "success",
@@ -63,6 +64,8 @@ def login(request):
 
 # the logout procedure.
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def logout(request):
+    request.user.auth_token.delete()
     log_out(request)
     return Response(status=status.HTTP_200_OK)
