@@ -16,3 +16,6 @@ code {
   font-family: "vazir";
   src: url("./Assets/Fonts/Vazir-Light.ttf");
 }
+* {
+  font-family: "vazir",serif;
+}
