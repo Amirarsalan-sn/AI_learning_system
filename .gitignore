@@ -95,3 +95,4 @@ Thumbs.db
 *.mov
 *.wmv
 venv
+migrations/
