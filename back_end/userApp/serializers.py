@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
+from .models import CustomUser
 
 
 class SignupSerializer(serializers.ModelSerializer):
@@ -11,19 +12,20 @@ class SignupSerializer(serializers.ModelSerializer):
         return super(SignupSerializer, self).create(validated_data)
 
     class Meta:
-        model = User
-        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'username', 'password', 'email', 'role')
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['username', 'password', 'email', 'first_name', 'last_name']
+        model = CustomUser
+        fields = ('username', 'password', 'email', 'first_name', 'last_name' , 'role')
 
 
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'password']
+
