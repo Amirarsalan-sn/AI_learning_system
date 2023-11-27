@@ -11,6 +11,11 @@ const Landing = lazy(() =>
 const Login = lazy(() =>
     import("./Components/Login/Login")
 );
+const Signup = lazy(() =>
+    import("./Components/Signup/Signup")
+);
+
+
 
 
 
@@ -19,7 +24,7 @@ const Router = () => {
     return useRoutes([
         {path: "/", element: <><Navbar/><Landing/></>},
         {path: "/login", element: <><Navbar/><Login/></>},
-        {path: "/signup", element: <Typography>ثبت نام</Typography>},
+        {path: "/signup", element: <><Navbar/><Signup/></>},
     ]);
 };
 export default Router;
