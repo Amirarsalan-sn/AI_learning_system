@@ -24,6 +24,11 @@ const theme = createTheme({
             'serif',
         ].join(','),
     },
+    palette: {
+        primary: {
+            main: '#F9AA33',
+        },
+    },
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

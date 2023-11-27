@@ -8,12 +8,17 @@ const Navbar = lazy(() =>
 const Landing = lazy(() =>
     import("./Components/Landing/Landing")
 );
+const Login = lazy(() =>
+    import("./Components/Login/Login")
+);
+
+
 
 
 const Router = () => {
     return useRoutes([
         {path: "/", element: <><Navbar/><Landing/></>},
-        {path: "/login", element: <Typography>ورود</Typography>},
+        {path: "/login", element: <><Navbar/><Login/></>},
         {path: "/signup", element: <Typography>ثبت نام</Typography>},
     ]);
 };
