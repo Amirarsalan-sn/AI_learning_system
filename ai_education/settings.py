@@ -32,6 +32,7 @@ AUTH_USER_MODEL = 'userApp.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
+    'classe_manage',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
