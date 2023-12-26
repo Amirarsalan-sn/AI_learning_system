@@ -1,6 +1,7 @@
 import {lazy} from "react";
 import {useRoutes} from "react-router-dom";
-import {Typography} from "@mui/material";
+import RouteGuard from './Components/RouteGuard/RouteGuard';
+import Typography from "@mui/material/Typography";
 
 const Navbar = lazy(() =>
     import("./Components/Navbar/Navbar")
@@ -15,7 +16,9 @@ const Signup = lazy(() =>
     import("./Components/Signup/Signup")
 );
 
-
+const Dashboard = lazy(() =>
+    import("./Components/Dashboard/Dashboard")
+);
 
 
 
@@ -25,6 +28,11 @@ const Router = () => {
         {path: "/", element: <><Navbar/><Landing/></>},
         {path: "/login", element: <><Navbar/><Login/></>},
         {path: "/signup", element: <><Navbar/><Signup/></>},
+        {path: "/dashboard", element: <RouteGuard allowedRoles={['T', 'S']} roleComponents={{
+                T: <Dashboard/>,
+                S: <Typography> this is S</Typography>,
+            }} />},
+
     ]);
 };
 export default Router;

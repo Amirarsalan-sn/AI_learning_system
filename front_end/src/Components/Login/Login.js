@@ -60,15 +60,19 @@ export default function Login() {
 
             const payload = JSON.stringify({password:data.get('password'),username:data.get('username')});
             const customConfig = {
+                // withCredentials: true,
+
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 }
             };
+            console.log("HERE")
             const response = await axios.post('http://localhost:8000/auth/login/', payload,customConfig);
+            console.log("after res")
             if (response.status === 200) {
 
-                sessionStorage.setItem("user", response.data.id);
-                sessionStorage.setItem("token", response.data.token);
+                sessionStorage.setItem("user", response.data.data.id);
+                sessionStorage.setItem("token", response.data.data.Token);
                 // console.log(sessionStorage.getItem('token'))
                 // console.log('Login successful');
 

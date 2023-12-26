@@ -16,6 +16,7 @@ class SignUp(APIView):
     permission_classes = (AllowAny,)
 
     def post(self, request):
+        print("CALLED")
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
             """If the validation success, it will created a new user."""
@@ -45,14 +46,15 @@ class Login(APIView):
                     "status": status.HTTP_200_OK,
                     "message": "success",
                     "data": {
-                        "Token": token.key
+                        "Token": token.key,
+                        "id": user.id
                     }
                 }
                 return Response(response, status=status.HTTP_200_OK)
             else:
                 response = {
                     "status": status.HTTP_401_UNAUTHORIZED,
-                    "message": "Invalid Email or Password",
+                    "message": "Invalid Username or Password",
                 }
                 return Response(response, status=status.HTTP_401_UNAUTHORIZED)
         response = {

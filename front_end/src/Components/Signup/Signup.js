@@ -66,6 +66,8 @@ export default function Signup() {
                 last_name:data.get('last-name'),
             });
             const customConfig = {
+                // withCredentials: true,
+
                 headers: {
                     'Content-Type': 'application/json'
                 }
