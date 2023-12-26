@@ -19,7 +19,13 @@ class SignupSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('username', 'password', 'email', 'first_name', 'last_name' , 'role')
+        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'role')
+
+
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = tuple('username')
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -28,4 +34,3 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['username', 'password']
-
