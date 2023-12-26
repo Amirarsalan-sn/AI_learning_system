@@ -48,7 +48,54 @@ const ReplyList = ({ replies }) => (
         ))}
     </Box>
 );
+const AddQuestion = ({ onQuestionSubmit }) => {
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
+    const handleQuestionSubmit = () => {
+        // Validate the fields, and if valid, call the onQuestionSubmit function
+        if (title.trim() === "" || content.trim() === "") {
+            // You can show an error message or handle validation as needed
+            return;
+        }
+
+        onQuestionSubmit({ title, content });
+        setTitle("");
+        setContent("");
+    };
+
+    return (
+        <Box
+            border={1}
+            borderRadius={4}
+            borderColor="grey.300"
+            p={2}
+            mb={2}
+            alignSelf="flex-end"
+        >
+            <Typography variant="h6">اضافه کردن سوال</Typography>
+            <TextField
+                label="عنوان سوال"
+                variant="outlined"
+                fullWidth
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+            />
+            <TextField
+                label="محتوای سوال"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={3}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            />
+            <Button variant="contained" color="primary" onClick={handleQuestionSubmit}>
+                ارسال سوال
+            </Button>
+        </Box>
+    );
+};
 const Discussion = () => {
     const [discussion, setDiscussion] = useState(null);
     const [newReply, setNewReply] = useState("");
