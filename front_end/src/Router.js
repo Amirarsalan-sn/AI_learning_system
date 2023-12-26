@@ -1,6 +1,8 @@
 import {lazy} from "react";
 import {useRoutes} from "react-router-dom";
 import {Typography} from "@mui/material";
+import Discussion from "./Components/Discussion/Discussion";
+import NewDiscussion from "./Components/Discussion/NewDiscussion";
 
 const Navbar = lazy(() =>
     import("./Components/Navbar/Navbar")
@@ -25,6 +27,8 @@ const Router = () => {
         {path: "/", element: <><Navbar/><Landing/></>},
         {path: "/login", element: <><Navbar/><Login/></>},
         {path: "/signup", element: <><Navbar/><Signup/></>},
+        {path: "/dashboard/class/:classId/discussion/:discussionId", element:<Discussion/>},
+        {path: "/dashboard/class/:classId/discussion/", element:<NewDiscussion/>},
     ]);
 };
 export default Router;
