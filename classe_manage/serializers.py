@@ -21,6 +21,23 @@ class ReplySerializer(serializers.ModelSerializer):
         fields = '__all__'  # You can specify fields explicitly if needed
 
 
+class ReplyDetailedSerializer(serializers.ModelSerializer):
+    author = UserSafeSerializer()
+
+    class Meta:
+        model = Reply
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class DiscussionDetailedSerializer(serializers.ModelSerializer):
+    creator = UserSafeSerializer()
+    replies_list = ReplyDetailedSerializer(many=True , source='discussion_replies')
+
+    class Meta:
+        model = Discussion
+        fields = ['id', 'title', 'question', 'creator', 'replies_list', 'created_at']
+
+
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
@@ -40,6 +57,16 @@ class ClassRoomSerializer(serializers.ModelSerializer):
 
 
 class ClassRoomDetailedSerializer(serializers.ModelSerializer):
+    students_list = UserSafeSerializer(many=True, source='students')
+    assistants_list = UserSafeSerializer(many=True, source='assistants')
+    professor = UserSafeSerializer(source='ProfessorID')
+
+    class Meta:
+        model = ClassRoom
+        fields = ["id", "ClassName", "students_list", "assistants_list", "professor"]
+
+
+class DiscussionDetailedSerializer(serializers.ModelSerializer):
     students_list = UserSafeSerializer(many=True, source='students')
     assistants_list = UserSafeSerializer(many=True, source='assistants')
     professor = UserSafeSerializer(source='ProfessorID')
