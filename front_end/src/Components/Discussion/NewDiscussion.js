@@ -39,7 +39,7 @@ const AddQuestion = ({ onQuestionSubmit }) => {
             borderColor="grey.300"
             p={2}
             mb={2}
-            alignSelf="flex-end"
+            alignSelf="flex-start"
         >
             <Typography variant="h6">اضافه کردن سوال</Typography>
             <TextField

@@ -14,10 +14,21 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-
+import NewDiscussion from '../Discussion/NewDiscussion'
 function ClassInfo() {
+    const navigate = useNavigate();
+    //
+    const handleDiscClick = () => {
+        navigate("discussion/1")
+        console.log("clicked")
+        // Replace "/c" with your desired URL
+    };
+    const handleExClick = () => {
+        navigate("assignment")
+        console.log("clicked")
+        // Replace "/c" with your desired URL
+    };
     const [data, setData] = useState({
-
         id: 12,
         title: "salam",
         body: "some thing",
@@ -74,7 +85,16 @@ function ClassInfo() {
 
                 <Grid item xs={6}>
 
-                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column',
+                        transition: 'transform 0.3s', // Add transition for elevation effect
+                        '&:hover': {
+                            transform: 'translateY(-6px)', // Elevate on hover
+                            cursor: 'pointer', // Change cursor to pointer on hover
+
+                        },
+                    }}
+                           onClick={handleDiscClick}
+                    >
                         <Typography component="h2" variant="h6" color="primary" gutterBottom >تالار گفتگو</Typography>
                         {
                             data.discussions.map(({id, body,date,title}) => {
@@ -84,13 +104,28 @@ function ClassInfo() {
                     </Paper>
                 </Grid>
                 <Grid item xs={6}>
-                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column',
+                        transition: 'transform 0.3s', // Add transition for elevation effect
+                        '&:hover': {
+                            transform: 'translateY(-6px)', // Elevate on hover
+                            cursor: 'pointer', // Change cursor to pointer on hover
+
+                        },
+                    }}
+                           onClick={handleExClick}
+                    >
                         <Typography component="h2" variant="h6" color="primary" gutterBottom >تمرین ها</Typography>
                         {
                             data.hws.map(({id,date,title}) => {
                                 return <PaperListItem id={id} date={date} title={title}/>
                             })
                         }
+                    </Paper>
+                </Grid>
+                <Grid item xs={6}>
+                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}
+                    >
+                        <NewDiscussion/>
                     </Paper>
                 </Grid>
             </Grid>

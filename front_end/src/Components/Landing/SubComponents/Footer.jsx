@@ -7,10 +7,7 @@ const Footer = () => {
             <Box textAlign='center' marginTop={'50px'}>
                 <Container>
                     <Typography>
-                        &copy; 2020 Issaaf Kattan React Land Page Template. Design by{' '}
-                        <a href='http://www.templatewire.com' rel='nofollow'>
-                            TemplateWire
-                        </a>
+                      2024
                     </Typography>
                 </Container>
             </Box>

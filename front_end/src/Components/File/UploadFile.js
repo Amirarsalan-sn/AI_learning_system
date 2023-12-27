@@ -3,6 +3,12 @@ import axios from 'axios';
 import { Button, Input, Typography } from '@mui/material';
 import Box from "@mui/material/Box";
 import {useNavigate} from "react-router-dom";
+import Divider from "@mui/material/Divider";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import Paper from "@mui/material/Paper";
 
 function UploadFile() {
     const [fileProperties, setFileProperties] = useState({
@@ -70,6 +76,22 @@ function UploadFile() {
 
     return (
         <>
+            <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                <Typography component="h2" variant="h6" color="primary" gutterBottom >تمرین اول</Typography>
+                <Divider></Divider>
+                <Table size="small">
+                    <TableBody>
+                        <TableRow>
+                            <TableCell>تاریخ پایان</TableCell>
+                            <TableCell>12/2/1403</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>توضیحات</TableCell>
+                            <TableCell>لطفا فایل خود را با فرمت pdf آپلود کنید.</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Paper>
             <form onSubmit={handleUpload}>
                 <Typography variant="h6" color="primary">
                     آپلود تکلیف

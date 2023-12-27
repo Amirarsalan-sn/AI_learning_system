@@ -55,8 +55,8 @@ const Reply = ({ id, body, author, time }) => (
 
 const ReplyList = ({ replies }) => (
     <Box mb={2} alignSelf="flex-end" width="100%">
-        {replies.map(({ id, body, author, time }) => (
-            <Reply key={id} id={id} body={body} author={author} time={time} />
+        {replies.map(({ id, body, author, created_at }) => (
+            <Reply key={id} id={id} body={body} author={author.email} time={created_at} />
         ))}
     </Box>
 );
@@ -112,7 +112,7 @@ const Discussion = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/dashboard/class/:classId/discussion/:discussionId");
+                const response = await axios.get("http://localhost:8000/api/classes/1/discussion/1");
                 setDiscussion(response.data);
             } catch (error) {
                 console.error("Error fetching data from the backend", error);
@@ -138,7 +138,7 @@ const Discussion = () => {
                     'Authorization': `Token ${TOKEN}`
                 }
             };
-            const { data } = await axios.post("http://localhost:8000/dashboard/class/:classId/discussion/:discussionId", payload, customConfig);
+            const { data } = await axios.post("http://localhost:8000/api/classes/1/discussion/1", payload, customConfig);
 
             if(data.status === 200) {
                 setCounter(!counter);
@@ -170,8 +170,8 @@ const Discussion = () => {
                 </Box>
             ) : discussion && (
                 <Box width="75%" textAlign="left">
-                    <QuestionBox username={discussion.username} time={discussion.time} title={discussion.title} question={discussion.question} />
-                    <ReplyList replies={discussion.replies} />
+                    <QuestionBox username={discussion.creator.username} time={discussion.created_at} title={discussion.title} question={discussion.question} />
+                    <ReplyList replies={discussion.replies_list} />
                     <AddReply onReplySubmit={handleReplySubmit}/>
                 </Box>
             )};

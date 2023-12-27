@@ -9,7 +9,7 @@ const Features = (props) => {
             <Container>
                 <Grid container spacing={3} justify='center'>
                     <Grid item xs={12}>
-                        <Typography variant='h2'>ویژگی ها</Typography>
+                        <Typography variant='h3'>ویژگی ها</Typography>
                     </Grid>
                     {props.data
                         ? props.data.map((d, i) => (
