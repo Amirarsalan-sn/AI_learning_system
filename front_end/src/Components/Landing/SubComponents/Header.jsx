@@ -11,7 +11,7 @@ const Header = (props) => {
                     <Container>
                         <Grid container justify="center">
                             <Grid item md={10}>
-                                <div className='intro-text' style={{ zIndex: 1, position: 'relative', textAlign: 'center' }}>
+                                <div className='intro-text' style={{ zIndex: 0, position: 'relative', textAlign: 'center' }}>
                                     <Typography variant="h1" gutterBottom>
                                         {props.data ? props.data.title : 'Loading'}
                                         <span></span>

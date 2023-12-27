@@ -7,10 +7,10 @@ const Contact = (props) => {
             <Container>
                 <Grid item xs={12} md={3} offset={1} className='contact-info'>
                     <div className='contact-item'>
-                        <Typography variant='h3'>Contact Info</Typography>
+                        <Typography variant='h3'>راه های ارتباطی</Typography>
                         <Typography>
                             <span>
-                              <i className='fa fa-map-marker'></i> Address
+                              <i className='fa fa-map-marker'></i> آدرس:
                             </span>
                             {props.data ? props.data.address : 'loading'}
                         </Typography>
@@ -18,7 +18,7 @@ const Contact = (props) => {
                     <div className='contact-item'>
                         <Typography>
                             <span>
-                              <i className='fa fa-phone'></i> Phone
+                              <i className='fa fa-phone'></i> شماره همراه:
                             </span>{' '}
                             {props.data ? props.data.phone : 'loading'}
                         </Typography>
@@ -26,7 +26,7 @@ const Contact = (props) => {
                     <div className='contact-item'>
                         <Typography>
                             <span>
-                              <i className='fa fa-envelope-o'></i> Email
+                              <i className='fa fa-envelope-o'></i> ایمیل:
                             </span>{' '}
                             {props.data ? props.data.email : 'loading'}
                         </Typography>
