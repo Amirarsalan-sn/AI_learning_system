@@ -2,6 +2,12 @@ import {lazy} from "react";
 import {useRoutes} from "react-router-dom";
 import RouteGuard from './Components/RouteGuard/RouteGuard';
 import Typography from "@mui/material/Typography";
+import {Typography} from "@mui/material";
+import Discussion from "./Components/Discussion/Discussion";
+import NewDiscussion from "./Components/Discussion/NewDiscussion";
+import UploadFile from "./Components/File/UploadFile";
+import DownloadFile from "./Components/File/DownloadFile";
+import RouteGuard from "./Components/RouteGuard/RouteGuard";
 
 const Navbar = lazy(() =>
     import("./Components/Navbar/Navbar")
@@ -30,9 +36,11 @@ const Router = () => {
         {path: "/signup", element: <><Navbar/><Signup/></>},
         {path: "/dashboard", element: <RouteGuard allowedRoles={['T', 'S']} roleComponents={{
                 T: <Dashboard/>,
-                S: <Typography> this is S</Typography>,
+                S: <Dashboard/>,
             }} />},
-
+        {path: "/dashboard/class/:classId/discussion/:discussionId", element:<Discussion/>},
+        {path: "/dashboard/class/:classId/discussion/", element:<NewDiscussion/>},
+        {path: "/dashboard/class/:classId/assignment/", element:<UploadFile/>},
     ]);
 };
 export default Router;
