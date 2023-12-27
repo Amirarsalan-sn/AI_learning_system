@@ -5,9 +5,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ClassRoom , Discussion , Reply
+from .models import ClassRoom, Discussion, Reply, Exercise, Submission
 from .serializers import ClassRoomDetailedSerializer, ClassRoomSerializer, DiscussionSerializer, \
-    DiscussionDetailedSerializer, ReplySerializer
+    DiscussionDetailedSerializer, ReplySerializer, ExerciseSerializer
 from .permissions import IsProfessorTAOrReadOnly
 
 
@@ -73,7 +73,7 @@ class ClassAPIView(APIView):
 class DiscussionAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
-    def get(self, request, class_id,pk=None):
+    def get(self, request, class_id, pk=None):
         user = request.user
 
         if pk is None:
@@ -89,7 +89,7 @@ class DiscussionAPIView(APIView):
             serializer = DiscussionDetailedSerializer(disc)
             return Response(serializer.data)
 
-    def post(self, request,class_id):
+    def post(self, request, class_id):
         serializer = DiscussionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -120,17 +120,19 @@ class DiscussionAPIView(APIView):
 
         disc.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ReplyAPIView(APIView):
     authentication_classes = [TokenAuthentication]
 
-    def post(self, request,class_id,discussion_id):
+    def post(self, request, class_id, discussion_id):
         serializer = ReplySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request,class_id,discussion_id, pk):
+    def put(self, request, class_id, discussion_id, pk):
         try:
             reply = Reply.objects.get(pk=pk)
             if reply.author != request.user.id:
@@ -144,7 +146,7 @@ class ReplyAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request,class_id,discussion_id,pk):
+    def delete(self, request, class_id, discussion_id, pk):
         try:
             reply = Reply.objects.get(pk=pk)
             if reply.author != request.user.id:
@@ -153,4 +155,53 @@ class ReplyAPIView(APIView):
             return Response({"detail": "reply not found"}, status=status.HTTP_404_NOT_FOUND)
 
         reply.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ExerciseAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsProfessorTAOrReadOnly]
+
+    def get(self, request, class_id, pk=None):
+        user = request.user
+
+        if pk is None:
+            exercise = Exercise.objects.filter(classroom=class_id)
+            serializer = ExerciseSerializer(exercise, many=True)
+            return Response(serializer.data)
+        else:
+            try:
+                exercise = Exercise.objects.get(pk=pk)
+            except Exercise.DoesNotExist:
+                return Response({"detail": "exercise not found"}, status=404)
+
+            serializer = ExerciseSerializer(exercise)
+            return Response(serializer.data)
+
+    def post(self, request, class_id):
+        serializer = ExerciseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk):
+        try:
+            exer = Exercise.objects.get(pk=pk)
+        except Exercise.DoesNotExist:
+            return Response({"detail": "exe not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ExerciseSerializer(exer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        try:
+            exer = Exercise.objects.get(pk=pk)
+        except Exercise.DoesNotExist:
+            return Response({"detail": "exercise not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        exer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

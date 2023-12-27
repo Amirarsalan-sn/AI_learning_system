@@ -33,6 +33,8 @@ AUTH_USER_MODEL = 'userApp.CustomUser'
 # Application definition
 
 INSTALLED_APPS = [
+    'drf_yasg',
+
     'classe_manage',
     'rest_framework',
     'rest_framework.authtoken',
