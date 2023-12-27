@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Grid, Typography, TextField, TextareaAutosize, Button } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 import Box from "@mui/material/Box";
-
-const initialState = {
-    name: '',
-    email: '',
-    message: '',
-};
-
 const Contact = (props) => {
     return (
         <Box id='contact' >
