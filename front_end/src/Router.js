@@ -3,6 +3,8 @@ import {useRoutes} from "react-router-dom";
 import {Typography} from "@mui/material";
 import Discussion from "./Components/Discussion/Discussion";
 import NewDiscussion from "./Components/Discussion/NewDiscussion";
+import UploadFile from "./Components/File/UploadFile";
+import DownloadFile from "./Components/File/DownloadFile";
 
 const Navbar = lazy(() =>
     import("./Components/Navbar/Navbar")
@@ -29,6 +31,7 @@ const Router = () => {
         {path: "/signup", element: <><Navbar/><Signup/></>},
         {path: "/dashboard/class/:classId/discussion/:discussionId", element:<Discussion/>},
         {path: "/dashboard/class/:classId/discussion/", element:<NewDiscussion/>},
+        {path: "/dashboard/class/:classId/assignment/", element:<UploadFile/>},
     ]);
 };
 export default Router;
