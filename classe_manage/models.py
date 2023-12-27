@@ -5,21 +5,12 @@ from userApp.models import CustomUser
 class ClassRoom(models.Model):
     ClassName = models.CharField(max_length=255)
     ProfessorID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    students = models.ManyToManyField(CustomUser, related_name='classes')
-    assistants = models.ManyToManyField(CustomUser, related_name='classes')
+    students = models.ManyToManyField(CustomUser, related_name='classes_s')
+    assistants = models.ManyToManyField(CustomUser, related_name='classes_t')
 
     def __str__(self):
         return self.ClassName
 
-
-class Reply(models.Model):
-    body = models.TextField()
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    discussion = models.ForeignKey(related_name='discussion_replies')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Reply by {self.author.username}"
 
 
 class Discussion(models.Model):
@@ -31,6 +22,16 @@ class Discussion(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Reply(models.Model):
+    body = models.TextField()
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    discussion = models.ForeignKey(Discussion,related_name='discussion_replies',on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reply by {self.author.username}"
 
 
 class Exercise(models.Model):
@@ -53,3 +54,13 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"Submission {self.SubmissionID} by {self.StudentID.username} for {self.ExerciseID.ExerciseName}"
+
+
+class Grade(models.Model):
+    submission = models.OneToOneField(Submission, on_delete=models.CASCADE)
+    checker = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    grade = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    description = models.CharField(max_length=512)
+
+    def __str__(self):
+        return f"Grade for Submission {self.submission.pk} by {self.submission.student.username}"

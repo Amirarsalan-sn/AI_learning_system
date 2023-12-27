@@ -1,37 +1,63 @@
-# from rest_framework import serializers
-# from .models import ClassRoom, ChatRoom, Chat
-# from ..userApp.serializers import SimpleUserSerializer
+from rest_framework import serializers
+from .models import Submission, Discussion, Reply, Exercise, Grade, ClassRoom
+from userApp.serializers import UserSerializer, UserSafeSerializer
+
+
+class SubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submission
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class DiscussionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Discussion
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class ReplySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reply
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class ExerciseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class GradeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Grade
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class ClassRoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClassRoom
+        fields = '__all__'  # You can specify fields explicitly if needed
+
+
+class ClassRoomDetailedSerializer(serializers.ModelSerializer):
+    students_list = UserSafeSerializer(many=True ,source='students')
+    assistants_list = UserSafeSerializer(many=True,source='assistants')
+    professor = UserSafeSerializer(source='ProfessorID')
+    class Meta:
+        model = ClassRoom
+        fields = ["id","ClassName" , "students_list","assistants_list" ,"professor"]
+
+
 #
-#
-# # because this serializer is used only when we are creating a classroom, and when we are creating a classroom there
-# # is only one attendant, I think there would be no problem if we just use SimpleUserSerializer().
-# # but in case we wanted to send all the attendants of a class along with its title an id in one response, we can use it.
-# class ClassRoomCreateSerializer(serializers.ModelSerializer):
-#     class_attendants = SimpleUserSerializer(many=True)
+# class BlockDetailSerializer(serializers.ModelSerializer):
+#     questions = serializers.SerializerMethodField()
 #
 #     class Meta:
-#         model = ClassRoom
-#         fields = ('id', 'class_title', 'class_attendants')
+#         model = Block
+#         fields = ['title', 'number', 'description', 'questions']
 #
-#
-# class ClassRoomGetSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = ClassRoom
-#         fields = ('id', 'class_title')
-#
-#
-# class ChatRoomSerializer(serializers.ModelSerializer):
-#     chat_class = ClassRoomGetSerializer()
-#
-#     class Meta:
-#         model = ChatRoom
-#         fields = ('id', 'chat_class')
-#
-#
-# class ChatSerializer(serializers.ModelSerializer):
-#     chat_room = ChatRoomSerializer()
-#     chat_author = SimpleUserSerializer()
-#
-#     class Meta:
-#         model = Chat
-#         fields = ('id', 'chat_room', 'chat_author', 'chat_body', 'created_time')
+#     def get_questions(self, obj):
+#         # Retrieve and serialize the questions associated with the block
+#         questions = Question.objects.filter(block=obj)
+#         serializer = QuestionSerializer(questions, many=True)
+#         return serializer.data
