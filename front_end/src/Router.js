@@ -1,8 +1,7 @@
 import {lazy} from "react";
-import {useRoutes} from "react-router-dom";
+import {useRoutes, useParams} from "react-router-dom";
 import RouteGuard from './Components/RouteGuard/RouteGuard';
 import Typography from "@mui/material/Typography";
-import {Typography} from "@mui/material";
 import Discussion from "./Components/Discussion/Discussion";
 import NewDiscussion from "./Components/Discussion/NewDiscussion";
 import UploadFile from "./Components/File/UploadFile";
@@ -26,7 +25,13 @@ const Dashboard = lazy(() =>
     import("./Components/Dashboard/Dashboard")
 );
 
+const ClassList = lazy(() =>
+    import("./Components/ClassList/ClassList")
+);
 
+const ClassInfo = lazy(() =>
+    import("./Components/ClassInfo/ClassInfo")
+);
 
 
 const Router = () => {
@@ -37,10 +42,17 @@ const Router = () => {
         {path: "/dashboard", element: <RouteGuard allowedRoles={['T', 'S']} roleComponents={{
                 T: <Dashboard/>,
                 S: <Dashboard/>,
-            }} />},
+
+            }} />,
+            children: [
+                { path: "", element: <ClassList/> }, // Default dashboard content
+                { path: "class/:classID", element: <ClassInfo/> }, // Dashboard content with classID
+            ]
+        },
         {path: "/dashboard/class/:classId/discussion/:discussionId", element:<Discussion/>},
         {path: "/dashboard/class/:classId/discussion/", element:<NewDiscussion/>},
         {path: "/dashboard/class/:classId/assignment/", element:<UploadFile/>},
+
     ]);
 };
 export default Router;
