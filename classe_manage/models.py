@@ -16,8 +16,8 @@ class ClassRoom(models.Model):
 class Discussion(models.Model):
     title = models.CharField(max_length=255)
     question = models.TextField()
-    creator = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    classroom = models.OneToOneField(ClassRoom, on_delete=models.CASCADE)
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

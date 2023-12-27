@@ -66,14 +66,6 @@ class ClassRoomDetailedSerializer(serializers.ModelSerializer):
         fields = ["id", "ClassName", "students_list", "assistants_list", "professor"]
 
 
-class DiscussionDetailedSerializer(serializers.ModelSerializer):
-    students_list = UserSafeSerializer(many=True, source='students')
-    assistants_list = UserSafeSerializer(many=True, source='assistants')
-    professor = UserSafeSerializer(source='ProfessorID')
-
-    class Meta:
-        model = ClassRoom
-        fields = ["id", "ClassName", "students_list", "assistants_list", "professor"]
 
 #
 # class BlockDetailSerializer(serializers.ModelSerializer):
