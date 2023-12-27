@@ -1,9 +1,10 @@
 # urls.py
 
 from django.urls import path
-from .views import ClassInfoView
+from .views import ClassAPIView
 
 urlpatterns = [
-    path('class-info/<int:class_id>/', ClassInfoView.as_view(), name='class-info'),
+    path('classes/<int:pk>/', ClassAPIView.as_view(), name='class-crud'),
+
     # Add other URLs as needed
 ]

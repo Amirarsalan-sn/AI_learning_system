@@ -40,13 +40,13 @@ class ClassRoomSerializer(serializers.ModelSerializer):
 
 
 class ClassRoomDetailedSerializer(serializers.ModelSerializer):
-    students_list = UserSafeSerializer(many=True ,source='students')
-    assistants_list = UserSafeSerializer(many=True,source='assistants')
+    students_list = UserSafeSerializer(many=True, source='students')
+    assistants_list = UserSafeSerializer(many=True, source='assistants')
     professor = UserSafeSerializer(source='ProfessorID')
+
     class Meta:
         model = ClassRoom
-        fields = ["id","ClassName" , "students_list","assistants_list" ,"professor"]
-
+        fields = ["id", "ClassName", "students_list", "assistants_list", "professor"]
 
 #
 # class BlockDetailSerializer(serializers.ModelSerializer):

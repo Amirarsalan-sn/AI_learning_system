@@ -4,7 +4,7 @@ from userApp.models import CustomUser
 
 class ClassRoom(models.Model):
     ClassName = models.CharField(max_length=255)
-    ProfessorID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    ProfessorID = models.ForeignKey(CustomUser, on_delete=models.CASCADE , related_name='classes_p')
     students = models.ManyToManyField(CustomUser, related_name='classes_s')
     assistants = models.ManyToManyField(CustomUser, related_name='classes_t')
 
