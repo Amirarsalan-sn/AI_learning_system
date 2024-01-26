@@ -5,9 +5,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import ClassRoom, Discussion, Reply, Exercise, Submission
+from .models import ClassRoom, Discussion, Reply, Exercise, Submission, Grade
 from .serializers import ClassRoomDetailedSerializer, ClassRoomSerializer, DiscussionSerializer, \
-    DiscussionDetailedSerializer, ReplySerializer, ExerciseSerializer
+    DiscussionDetailedSerializer, ReplySerializer, ExerciseSerializer, SubmissionSerializer, GradeSerializer
 from .permissions import IsProfessorTAOrReadOnly
 
 
@@ -204,4 +204,91 @@ class ExerciseAPIView(APIView):
             return Response({"detail": "exercise not found"}, status=status.HTTP_404_NOT_FOUND)
 
         exer.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class SubmissionAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsProfessorTAOrReadOnly]
+
+    def get(self, request, exercise_id, pk=None):
+        if pk is None:
+            submissions = Submission.objects.filter(exercise=exercise_id)
+            serializer = SubmissionSerializer(submissions, many=True)
+            return Response(serializer.data)
+        else:
+            try:
+                submission = Submission.objects.get(pk=pk, student=request.user)
+            except Submission.DoesNotExist:
+                return Response({"detail": "submission not found"}, status=404)
+
+            serializer = SubmissionSerializer(submission)
+            return Response(serializer.data)
+
+    def post(self, request, exercise_id):
+        serializer = SubmissionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(student=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, exercise_id, pk):
+        try:
+            submission = Submission.objects.get(pk=pk, student=request.user)
+        except Submission.DoesNotExist:
+            return Response({"detail": "submission not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = SubmissionSerializer(submission, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, exercise_id, pk):
+        try:
+            submission = Submission.objects.get(pk=pk, student=request.user)
+        except Submission.DoesNotExist:
+            return Response({"detail": "submission not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        submission.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class GradeAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsProfessorTAOrReadOnly]
+
+    def get(self, request, submission_id):
+        try:
+            grade = Grade.objects.get(submission=submission_id)
+        except Grade.DoesNotExist:
+            return Response({"detail": "grade not found"}, status=404)
+
+        serializer = GradeSerializer(grade)
+        return Response(serializer.data)
+
+    def post(self, request, submission_id):
+        serializer = GradeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, submission_id):
+        try:
+            grade = Grade.objects.get(submission=submission_id)
+        except Grade.DoesNotExist:
+            return Response({"detail": "grade not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = GradeSerializer(grade, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, submission_id):
+        try:
+            grade = Grade.objects.get(submission=submission_id)
+        except Grade.DoesNotExist:
+            return Response({"detail": "grade not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        grade.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

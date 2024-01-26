@@ -38,7 +38,7 @@ class Exercise(models.Model):
     exercise_name = models.CharField(max_length=255)
     description = models.CharField(max_length=512)
     created_at = models.DateTimeField(auto_now_add=True)
-    exercise_file = models.FileField(null=True, blank=True)
+    exercise_file = models.FileField(upload_to='exercises/', null=True, blank=True)
     classroom = models.ForeignKey(ClassRoom, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -49,7 +49,7 @@ class Submission(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     text = models.TextField(null=True, blank=True)
-    submission_file = models.FileField(null=True, blank=True)
+    submission_file = models.FileField(upload_to='submissions/', null=True, blank=True)
     submission_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
