@@ -12,3 +12,4 @@ rpds-py==0.17.1
 sqlparse==0.4.4
 typing_extensions==4.8.0
 tzdata==2023.3
+drf_yasg==1.21.7
