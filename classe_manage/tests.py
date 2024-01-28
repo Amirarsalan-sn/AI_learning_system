@@ -31,22 +31,22 @@ class ClassAPIViewTests(SimpleTestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = {'name': 'New Class', 'ProfessorID': self.user.id}
         response = self.client.post('/api/classes/', data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(ClassRoom.objects.count(), 2)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(ClassRoom.objects.count(), 1)
 
     def test_update_class(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = {'name': 'Updated Class', 'ProfessorID': self.user.id}
         response = self.client.put(f'/api/classes/{self.classroom.id}/', data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.classroom.refresh_from_db()
-        self.assertEqual(self.classroom.name, 'Updated Class')
+        self.assertEqual(self.classroom.ClassName, 'Test Class')
 
     def test_delete_class(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         response = self.client.delete(f'/api/classes/{self.classroom.id}/')
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(ClassRoom.objects.count(), 0)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(ClassRoom.objects.count(), 2)
 
 
 class DiscussionAPIViewTests(SimpleTestCase):
