@@ -9,9 +9,15 @@ from rest_framework import status
 class ClassAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
-        self.token = Token.objects.create(user=self.user)
-        self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
+        self.user = CustomUser.objects.create_user(username='TestUser12345', password='12345678@')
+        try:
+            self.token = Token.objects.get(user=self.user)
+        except Token.DoesNotExist:
+            # If the token doesn't exist, create a new one
+            self.token = Token.objects.create(user=self.user)
+
+        self.classroom = ClassRoom.objects.create(ClassName='Test Class', ProfessorID=self.user)
+        #self.client.force_authenticate(user=self.user)
 
     def test_get_class_list(self):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
