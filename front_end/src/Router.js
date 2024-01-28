@@ -6,6 +6,7 @@ import Discussion from "./Components/Discussion/Discussion";
 import NewDiscussion from "./Components/Discussion/NewDiscussion";
 import UploadFile from "./Components/File/UploadFile";
 import DownloadFile from "./Components/File/DownloadFile";
+import AlgoView from "./Components/AlgoView/AlgoView";
 
 const Navbar = lazy(() =>
     import("./Components/Navbar/Navbar")
@@ -54,6 +55,7 @@ const Router = () => {
 
         {path: "/login", element: <><Navbar/><Login/></>},
         {path: "/signup", element: <><Navbar/><Signup/></>},
+
         {path: "/dashboard", element: <RouteGuard allowedRoles={['T', 'S']} roleComponents={{
                 T: <Dashboard/>,
                 S: <Dashboard/>,
@@ -65,6 +67,7 @@ const Router = () => {
                 {path: "class/:classId/discussion/", element:<NewDiscussion/>},
                 {path: "class/:classId/discussion/:discussionId", element:<Discussion/>},
                 {path: "/dashboard/class/:classId/assignment/", element:<UploadFile/>},
+                {path: "/dashboard/algoview/", element:<AlgoView/>},
             ]
         },
 

@@ -113,7 +113,7 @@ export default function Tree({ adjacencyMatrix , visitingNode}) {
     const { nodes, edges } = convertAdjacencyMatrixToElements(adjacencyMatrix);
     applyTreeLayout(nodes,edges);
     return (
-        <div style={{ width: '100vw', height: '100vh',direction: 'ltr', }}>
+        <div style={{ width: '70vw', height: '70vh',direction: 'ltr', }}>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}

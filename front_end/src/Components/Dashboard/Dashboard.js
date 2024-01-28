@@ -153,11 +153,11 @@ export default function Dashboard() {
                         </React.Fragment>
                         <Divider sx={{my: 1}}/>
                         <React.Fragment>
-                            <ListItemButton onClick={() => navigate('/dashboard/questionaire')}>
+                            <ListItemButton onClick={() => navigate('/dashboard/algoview')}>
                                 <ListItemIcon>
                                     <BarChartIcon/>
                                 </ListItemIcon>
-                                <ListItemText primary="تست"/>
+                                <ListItemText primary="الگوریتم های مصور"/>
                             </ListItemButton>
                         </React.Fragment>
                     </List>
