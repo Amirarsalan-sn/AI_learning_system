@@ -1,6 +1,6 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
-from django.contrib.auth.models import User
+from userApp.models import CustomUser
 from rest_framework.authtoken.models import Token
 from .models import ClassRoom, Discussion, Reply, Exercise, Submission, Grade
 from rest_framework import status
@@ -9,7 +9,7 @@ from rest_framework import status
 class ClassAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
         self.token = Token.objects.create(user=self.user)
         self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
 
@@ -43,7 +43,7 @@ class ClassAPIViewTests(TestCase):
 class DiscussionAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
         self.token = Token.objects.create(user=self.user)
         self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
         self.discussion = Discussion.objects.create(title='Test Discussion', creator=self.user, classroom=self.classroom)
@@ -67,7 +67,7 @@ class DiscussionAPIViewTests(TestCase):
 class ReplyAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
         self.token = Token.objects.create(user=self.user)
         self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
         self.discussion = Discussion.objects.create(title='Test Discussion', creator=self.user, classroom=self.classroom)
@@ -108,7 +108,7 @@ class ReplyAPIViewTests(TestCase):
 class ExerciseAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
         self.token = Token.objects.create(user=self.user)
         self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
         self.exercise = Exercise.objects.create(title='Test Exercise', description='Test Description', classroom=self.classroom)
@@ -148,7 +148,7 @@ class ExerciseAPIViewTests(TestCase):
 class SubmissionAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
         self.token = Token.objects.create(user=self.user)
         self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
         self.exercise = Exercise.objects.create(title='Test Exercise', description='Test Description', classroom=self.classroom)
@@ -189,7 +189,7 @@ class SubmissionAPIViewTests(TestCase):
 class GradeAPIViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.user = CustomUser.objects.create_user(username='testuser', password='12345')
         self.token = Token.objects.create(user=self.user)
         self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
         self.exercise = Exercise.objects.create(title='Test Exercise', description='Test Description', classroom=self.classroom)
