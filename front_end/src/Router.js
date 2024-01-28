@@ -31,11 +31,27 @@ const ClassList = lazy(() =>
 const ClassInfo = lazy(() =>
     import("./Components/ClassInfo/ClassInfo")
 );
-
+const Graph = lazy(() =>
+    import("./Components/Graph/Graph")
+);
+const Tree = lazy(() =>
+    import("./Components/Graph/Tree")
+);
+const TreeWrapper = lazy(() =>
+    import("./Components/Graph/TreeWrapper")
+);
+const adjacencyMatrix = [
+    [0, 1, 1, 0],
+    [1, 0, 0, 1],
+    [1, 0, 0, 0],
+    [0, 1, 0, 0]
+];
 
 const Router = () => {
     return useRoutes([
         {path: "/", element: <><Navbar/><Landing/></>},
+        {path: "/treew", element: <TreeWrapper/>},
+
         {path: "/login", element: <><Navbar/><Login/></>},
         {path: "/signup", element: <><Navbar/><Signup/></>},
         {path: "/dashboard", element: <RouteGuard allowedRoles={['T', 'S']} roleComponents={{
