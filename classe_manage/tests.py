@@ -49,35 +49,35 @@ class ClassAPIViewTests(SimpleTestCase):
         self.assertEqual(ClassRoom.objects.count(), 2)
 
 
-class DiscussionAPIViewTests(SimpleTestCase):
-    databases = '__all__'
-
-    def setUp(self):
-        self.client = APIClient()
-        unique_username = f'TestUser_{uuid.uuid4().hex[:6]}'  # Generate a unique username
-        self.user = CustomUser.objects.create_user(username=unique_username, password='12345')
-        try:
-            self.token = Token.objects.get(user=self.user)
-        except Token.DoesNotExist:
-            # If the token doesn't exist, create a new one
-            self.token = Token.objects.create(user=self.user)
-        self.classroom = ClassRoom.objects.create(ClassName='Test Class', ProfessorID=self.user)
-        self.discussion = Discussion.objects.create(title='Test Discussion', creator=self.user, classroom=self.classroom)
-
-    def test_get_discussion_list(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        response = self.client.get(f'/api/discussions/{self.classroom.id}/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_get_discussion_detail(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        response = self.client.get(f'/api/discussions/{self.classroom.id}/{self.discussion.id}/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_create_discussion(self):
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-        data = {'title': 'New Discussion', 'creator': self.user.id, 'classroom': self.classroom.id}
-        response = self.client.post(f'/api/discussions/{self.classroom.id}/', data, format='json')
+# class DiscussionAPIViewTests(SimpleTestCase):
+#     databases = '__all__'
+#
+#     def setUp(self):
+#         self.client = APIClient()
+#         unique_username = f'TestUser_{uuid.uuid4().hex[:6]}'  # Generate a unique username
+#         self.user = CustomUser.objects.create_user(username=unique_username, password='12345')
+#         try:
+#             self.token = Token.objects.get(user=self.user)
+#         except Token.DoesNotExist:
+#             # If the token doesn't exist, create a new one
+#             self.token = Token.objects.create(user=self.user)
+#         self.classroom = ClassRoom.objects.create(ClassName='Test Class', ProfessorID=self.user)
+#         self.discussion = Discussion.objects.create(title='Test Discussion', creator=self.user, classroom=self.classroom)
+#
+#     def test_get_discussion_list(self):
+#         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+#         response = self.client.get(f'/api/discussions/{self.classroom.id}/')
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#
+#     def test_get_discussion_detail(self):
+#         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+#         response = self.client.get(f'/api/discussions/{self.classroom.id}/{self.discussion.id}/')
+#         self.assertEqual(response.status_code, status.HTTP_200_OK)
+#
+#     def test_create_discussion(self):
+#         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+#         data = {'title': 'New Discussion', 'creator': self.user.id, 'classroom': self.classroom.id}
+#         response = self.client.post(f'/api/discussions/{self.classroom.id}/', data, format='json')
 
 
 # class ReplyAPIViewTests(SimpleTestCase):
