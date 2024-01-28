@@ -62,3 +62,44 @@ class DiscussionAPIViewTests(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
         data = {'title': 'New Discussion', 'creator': self.user.id, 'classroom': self.classroom.id}
         response = self.client.post(f'/api/discussions/{self.classroom.id}/', data, format='json')
+
+
+class ReplyAPIViewTests(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.token = Token.objects.create(user=self.user)
+        self.classroom = ClassRoom.objects.create(name='Test Class', ProfessorID=self.user.id)
+        self.discussion = Discussion.objects.create(title='Test Discussion', creator=self.user, classroom=self.classroom)
+        self.reply = Reply.objects.create(content='Test Reply', author=self.user, discussion=self.discussion)
+
+    def test_get_reply_list(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        response = self.client.get(f'/api/replies/{self.discussion.id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_reply_detail(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        response = self.client.get(f'/api/replies/{self.discussion.id}/{self.reply.id}/')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_create_reply(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        data = {'content': 'New Reply', 'author': self.user.id, 'discussion': self.discussion.id}
+        response = self.client.post(f'/api/replies/{self.discussion.id}/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Reply.objects.count(), 2)
+
+    def test_update_reply(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        data = {'content': 'Updated Reply', 'author': self.user.id, 'discussion': self.discussion.id}
+        response = self.client.put(f'/api/replies/{self.discussion.id}/{self.reply.id}/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.reply.refresh_from_db()
+        self.assertEqual(self.reply.content, 'Updated Reply')
+
+    def test_delete_reply(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+        response = self.client.delete(f'/api/replies/{self.discussion.id}/{self.reply.id}/')
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Reply.objects.count(), 0)
