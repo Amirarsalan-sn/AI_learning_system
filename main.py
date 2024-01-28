@@ -3,6 +3,7 @@
 
     This code is reviewed and edited by Amir Arsalan Sanati.
 """
+import random
 
 sample_graph = {
     # parent: list of children from left to right
@@ -19,9 +20,13 @@ class SearchAlgos:
     _ROOT = 0
 
     @staticmethod
-    def _show_graph(graph: dict[int, list[int]]):
+    def show_graph(graph: dict[int, list[int]]):
         for key, value in graph.items():
             print(key, value)
+
+        for key, value in graph.items():
+            for v in value:
+                print(key, v)
 
     @staticmethod
     def _get_all_nodes(graph: dict[int, list[int]]):
@@ -88,9 +93,49 @@ class SearchAlgos:
         return sequence
 
 
-if __name__ == "__main__":
-    dfs_seq = SearchAlgos.dfs(sample_graph)
-    bfs_seq = SearchAlgos.bfs(sample_graph)
+class GraphProcessing:
 
-    print(dfs_seq)
-    print(bfs_seq)
+    @staticmethod
+    def gen_rand_graph():
+        num_of_nodes = random.randint(7, 16)
+        adjacent_matrix = [[0 for x in range(num_of_nodes)] for x in range(num_of_nodes)]
+        nodes_list = [x for x in range(1, num_of_nodes)]
+        random.shuffle(nodes_list)
+        process_list = [0]
+        while process_list:
+            parent = process_list.pop(0)
+            if not process_list:
+                num_of_children = random.randint(1, 4)
+            else:
+                num_of_children = random.randint(0, 4)
+            for i in range(num_of_children):
+                if nodes_list:
+                    child = nodes_list.pop(0)
+                    adjacent_matrix[parent][child] = 1
+                    process_list.append(child)
+
+        return adjacent_matrix
+
+    @staticmethod
+    def convert_matrix_to_dict(matrix: list[list[int]]):
+        result_dict = {}
+        for i in range(len(matrix)):
+            for j in range(len(matrix)):
+                if matrix[i][j]:
+                    if result_dict.get(i) is None:
+                        result_dict[i] = []
+                    result_dict[i].append(j)
+
+        return result_dict
+
+
+if __name__ == "__main__":
+    graph = GraphProcessing.gen_rand_graph()
+    print(graph)
+    graph_dict = GraphProcessing.convert_matrix_to_dict(graph)
+    SearchAlgos.show_graph(graph_dict)
+    dfs_seq = SearchAlgos.dfs(graph_dict)
+    bfs_seq = SearchAlgos.bfs(graph_dict)
+    print(f'dfs : {dfs_seq}')
+    print(f'bfs : {bfs_seq}')
+
