@@ -3,6 +3,7 @@ import axios from "axios";
 import Box from "@mui/material/Box";
 import { Typography, TextField, Button, Snackbar, CircularProgress } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import {useParams} from "react-router-dom";
 const UserInfoBox = ({ username, time }) => (
     <Box
         display="flex"
@@ -102,7 +103,8 @@ const AddReply = ({ onReplySubmit }) => {
         </Box>
     );
 };
-const Discussion = ({ class_id, discussion_id }) => {
+const Discussion = () => {
+    const { classId, discussionId } = useParams();
     const [discussion, setDiscussion] = useState(null);
     const [error, setError] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -112,7 +114,7 @@ const Discussion = ({ class_id, discussion_id }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/classes/${class_id}/discussion/${discussion_id}`);
+                const response = await axios.get(`http://localhost:8000/api/classes/${classId}/discussion/${discussionId}`);
                 setDiscussion(response.data);
             } catch (error) {
                 console.error("Error fetching data from the backend", error);
@@ -123,7 +125,7 @@ const Discussion = ({ class_id, discussion_id }) => {
         };
 
         fetchData();
-    }, [class_id, discussion_id]);
+    }, [classId, discussionId]);
     const handleReplySubmit = async (reply) => {
         try {
             const TOKEN = sessionStorage.getItem('token');
@@ -138,7 +140,7 @@ const Discussion = ({ class_id, discussion_id }) => {
                     'Authorization': `Token ${TOKEN}`
                 }
             };
-            const { data } = await axios.post(`http://localhost:8000/api/classes/${class_id}/discussion/${discussion_id}`, payload, customConfig);
+            const { data } = await axios.post(`http://localhost:8000/api/classes/${classId}/discussion/${discussionId}`, payload, customConfig);
 
             if(data.status === 200) {
                 setCounter(!counter);

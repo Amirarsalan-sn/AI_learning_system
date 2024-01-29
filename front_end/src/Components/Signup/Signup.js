@@ -13,6 +13,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+
 
 import { authContext } from "../../App";
 import axios from "axios"
@@ -20,18 +25,17 @@ import axios from "axios"
 export default function Signup() {
 
     const [showPassword, setShowPassword] = useState(false);
-
+    const [role, setRole] = useState('');
     const { setAuth } = useContext(authContext);
     const navigate = useNavigate();
-
-
-
     const [signupError, setSignupError] = useState(null);
-
-
 
     const nav = () => {
         navigate("/"); // Omit optional second argument
+    };
+
+    const handleRoleChange = (event) => {
+        setRole(event.target.value);
     };
 
     useEffect(() => {
@@ -64,6 +68,7 @@ export default function Signup() {
                 email:data.get('email'),
                 first_name:data.get('first-name'),
                 last_name:data.get('last-name'),
+                role: role
             });
             const customConfig = {
                 // withCredentials: true,
@@ -73,7 +78,7 @@ export default function Signup() {
                 }
             };
             const response = await axios.post('http://localhost:8000/auth/signup/', payload,customConfig);
-            if (response.status === 200) {
+            if (response.status === 201) {
 
                 // sessionStorage.setItem("user", response.data.id);
                 // sessionStorage.setItem("token", response.data.token);
@@ -174,6 +179,20 @@ export default function Signup() {
                             ),
                         }}
                     />
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel id="role-label">نقش</InputLabel>
+                        <Select
+                            labelId="role-label"
+                            id="role"
+                            value={role}
+                            label="نقش"
+                            onChange={handleRoleChange}
+                        >
+                            <MenuItem value="S">دانشجو</MenuItem>
+                            <MenuItem value="P">معلم</MenuItem>
+                            <MenuItem value="T">دستیار آموزشی</MenuItem>
+                        </Select>
+                    </FormControl>
                     <Button
                         type="submit"
                         fullWidth

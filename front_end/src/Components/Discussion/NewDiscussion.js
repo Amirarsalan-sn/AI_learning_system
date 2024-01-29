@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import {Button, Snackbar, TextField, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const AddQuestion = ({ onQuestionSubmit }) => {
     const [title, setTitle] = useState("");
@@ -66,7 +66,8 @@ const AddQuestion = ({ onQuestionSubmit }) => {
     );
 };
 
-const NewDiscussion = ({ class_id }) => {
+const NewDiscussion = () => {
+    const { classId } = useParams();
     const [discussion, setDiscussion] = useState(null);
     const [error, setError] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -86,7 +87,7 @@ const NewDiscussion = ({ class_id }) => {
                     'Authorization': `Token ${TOKEN}`
                 }
             };
-            const { data } = await axios.post('http://localhost:8000/dashboard/class/${class_id}/discussion/',payload, customConfig);
+            const { data } = await axios.post(`http://localhost:8000/dashboard/class/${classId}/discussion/`,payload, customConfig);
             if (data.status === 200) {
                 navigate(data.discussionId);
             }else {
