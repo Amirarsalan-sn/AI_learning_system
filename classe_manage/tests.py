@@ -4,6 +4,7 @@ from rest_framework import status
 from .models import CustomUser, ClassRoom, Discussion, Reply
 from rest_framework.authtoken.models import Token
 import uuid
+from .utils import PasswordGenerator
 
 
 class ClassAPIViewTests(TestCase):
@@ -11,14 +12,15 @@ class ClassAPIViewTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        password_generator = PasswordGenerator()
 
         unique_username = f'Student_{uuid.uuid4().hex[:6]}'
-        self.student = CustomUser.objects.create_user(username=unique_username, password='12345678@', role='S')
+        self.student = CustomUser.objects.create_user(username=unique_username, password=password_generator.generate_strong_password(), role='S')
 
         self.token, _ = Token.objects.get_or_create(user=self.student)
 
         prof_username = f'Professor_{uuid.uuid4().hex[:6]}'
-        self.professor = CustomUser.objects.create_user(username=prof_username, password='12345678@', role='P')
+        self.professor = CustomUser.objects.create_user(username=prof_username, password=password_generator.generate_strong_password(), role='P')
 
         self.classroom = ClassRoom.objects.create(ClassName='Test Class', ProfessorID=self.professor)
         self.classroom.students.add(self.student)
@@ -74,15 +76,16 @@ class DiscussionAPIViewTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        password_generator = PasswordGenerator()
 
         # Create a student user
         unique_username = f'Student_{uuid.uuid4().hex[:6]}'
-        self.student = CustomUser.objects.create_user(username=unique_username, password='12345678@', role='S')
+        self.student = CustomUser.objects.create_user(username=unique_username, password=password_generator.generate_strong_password(), role='S')
         self.student_token, _ = Token.objects.get_or_create(user=self.student)
 
         # Create a professor user
         prof_username = f'Professor_{uuid.uuid4().hex[:6]}'
-        self.professor = CustomUser.objects.create_user(username=prof_username, password='12345678@', role='P')
+        self.professor = CustomUser.objects.create_user(username=prof_username, password=password_generator.generate_strong_password(), role='P')
         self.professor_token, _ = Token.objects.get_or_create(user=self.professor)
 
         # Create a classroom
@@ -131,9 +134,10 @@ class ReplyAPIViewTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.password_generator = PasswordGenerator()
 
         # Create users
-        self.user = CustomUser.objects.create_user(username=f'User_{uuid.uuid4().hex[:6]}', password='12345678@')
+        self.user = CustomUser.objects.create_user(username=f'User_{uuid.uuid4().hex[:6]}', password=self.password_generator.generate_strong_password())
         self.user_token, _ = Token.objects.get_or_create(user=self.user)
 
         # Create a classroom and discussion
@@ -151,7 +155,7 @@ class ReplyAPIViewTests(TestCase):
 
     def test_update_reply_not_author(self):
         # Create a reply with a different author
-        other_user = CustomUser.objects.create_user(username=f'OtherUser_{uuid.uuid4().hex[:6]}', password='12345678@')
+        other_user = CustomUser.objects.create_user(username=f'OtherUser_{uuid.uuid4().hex[:6]}', password=self.password_generator.generate_strong_password())
         reply = self.create_reply(author=other_user)
 
         self.authenticate(self.user_token)
@@ -166,7 +170,7 @@ class ReplyAPIViewTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_delete_reply_not_author(self):
-        other_user = CustomUser.objects.create_user(username=f'OtherUser_{uuid.uuid4().hex[:6]}', password='12345678@')
+        other_user = CustomUser.objects.create_user(username=f'OtherUser_{uuid.uuid4().hex[:6]}', password=self.password_generator.generate_strong_password())
         reply = self.create_reply(author=other_user)
 
         self.authenticate(self.user_token)

@@ -1,4 +1,7 @@
 import random
+import re
+import secrets
+import string
 
 sample_graph = {
     0: [1, 2],
@@ -85,17 +88,17 @@ class SearchAlgos:
 
 class GraphProcessing:
     def gen_rand_graph(self):
-        num_of_nodes = random.randint(7, 16)
+        num_of_nodes = secrets.randbelow(10) + 7
         adjacent_matrix = [[0 for x in range(num_of_nodes)] for x in range(num_of_nodes)]
         nodes_list = [x for x in range(1, num_of_nodes)]
-        random.shuffle(nodes_list)
+        secrets.SystemRandom().shuffle(nodes_list)
         process_list = [0]
         while process_list:
             parent = process_list.pop(0)
             if not process_list:
-                num_of_children = random.randint(1, 4)
+                num_of_children = secrets.randbelow(4) + 1
             else:
-                num_of_children = random.randint(0, 4)
+                num_of_children = secrets.randbelow(5)
             for i in range(num_of_children):
                 if nodes_list:
                     child = nodes_list.pop(0)
@@ -114,3 +117,15 @@ class GraphProcessing:
                     result_dict[i].append(j)
 
         return result_dict
+
+
+class PasswordGenerator:
+
+    def __init__(self):
+        self.pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&*])[A-Za-z\d@#$%&*]{8,}$'
+
+    def generate_strong_password(self):
+        while True:
+            random_password = ''.join(secrets.choice(string.ascii_letters + string.digits + '@#$%&') for _ in range(12))
+            if re.match(self.pattern, random_password):
+                return random_password
