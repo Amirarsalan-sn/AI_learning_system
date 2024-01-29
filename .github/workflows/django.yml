@@ -26,6 +26,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools
         pip install -r requirements.txt
+    - name: Set Up Environment Variables
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: |
+        echo "SECRET_KEY=$SECRET_KEY" >> .env
     - name: Run Tests
       run: |
         python manage.py test
