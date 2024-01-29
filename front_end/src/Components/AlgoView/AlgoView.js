@@ -15,7 +15,7 @@ function AlgoView() {
     const [algorithm, setAlgorithm] = useState('bfs'); // or 'dfs'
     const [adjacencyMatrix, setAdjacencyMatrix] = useState(exMatrix);
     const [sequence, setSequence] = useState([0,1,2,3]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const fetchNewInstance = async () => {
         setLoading(true);

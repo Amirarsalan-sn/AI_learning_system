@@ -63,10 +63,12 @@ const Router = () => {
             }} />,
             children: [
                 { path: "", element: <ClassList/> }, // Default dashboard content
+                { path: "classes", element: <ClassList/> }, // Default dashboard content
+
                 { path: "class/:classID", element: <ClassInfo/> }, // Dashboard content with classID
                 {path: "class/:classId/discussion/", element:<NewDiscussion/>},
                 {path: "class/:classId/discussion/:discussionId", element:<Discussion/>},
-                {path: "/dashboard/class/:classId/assignment/", element:<UploadFile/>},
+                {path: "/dashboard/class/:classId/assignment/:assId", element:<UploadFile/>},
                 {path: "/dashboard/algoview/", element:<AlgoView/>},
             ]
         },
