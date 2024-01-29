@@ -102,7 +102,7 @@ const AddReply = ({ onReplySubmit }) => {
         </Box>
     );
 };
-const Discussion = () => {
+const Discussion = ({ class_id, discussion_id }) => {
     const [discussion, setDiscussion] = useState(null);
     const [error, setError] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -112,7 +112,7 @@ const Discussion = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("http://localhost:8000/api/classes/1/discussion/1");
+                const response = await axios.get(`http://localhost:8000/api/classes/${class_id}/discussion/${discussion_id}`);
                 setDiscussion(response.data);
             } catch (error) {
                 console.error("Error fetching data from the backend", error);
@@ -123,7 +123,7 @@ const Discussion = () => {
         };
 
         fetchData();
-    }, []);
+    }, [class_id, discussion_id]);
     const handleReplySubmit = async (reply) => {
         try {
             const TOKEN = sessionStorage.getItem('token');
@@ -138,7 +138,7 @@ const Discussion = () => {
                     'Authorization': `Token ${TOKEN}`
                 }
             };
-            const { data } = await axios.post("http://localhost:8000/api/classes/1/discussion/1", payload, customConfig);
+            const { data } = await axios.post(`http://localhost:8000/api/classes/${class_id}/discussion/${discussion_id}`, payload, customConfig);
 
             if(data.status === 200) {
                 setCounter(!counter);

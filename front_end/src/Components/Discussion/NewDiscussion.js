@@ -66,7 +66,7 @@ const AddQuestion = ({ onQuestionSubmit }) => {
     );
 };
 
-const NewDiscussion = () => {
+const NewDiscussion = ({ class_id }) => {
     const [discussion, setDiscussion] = useState(null);
     const [error, setError] = useState("");
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -86,7 +86,7 @@ const NewDiscussion = () => {
                     'Authorization': `Token ${TOKEN}`
                 }
             };
-            const { data } = await axios.post("http://localhost:8000/dashboard/class/:classId/discussion/",payload, customConfig);
+            const { data } = await axios.post('http://localhost:8000/dashboard/class/${class_id}/discussion/',payload, customConfig);
             if (data.status === 200) {
                 navigate(data.discussionId);
             }else {
