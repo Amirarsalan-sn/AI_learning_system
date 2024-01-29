@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - back_end
+      - front_end
+      - Chat_discussion
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
