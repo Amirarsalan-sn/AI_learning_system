@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  django:
+    build: ./path/to/django
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./path/to/django:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1  # Set to 0 in production
+
+  react:
+    build: ./path/to/react
+    volumes:
+      - ./path/to/react:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development  # Change to production as needed
