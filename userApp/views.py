@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate, logout as log_out
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from .models import CustomUser
@@ -15,16 +15,22 @@ class SignUp(APIView):
     serializer_class = SignupSerializer
     permission_classes = (AllowAny,)
 
+    @swagger_auto_schema(request_body=serializer_class,
+                            responses={201: 'Sign up Successful', 400: 'Bad Request'})
     def post(self, request):
         serializer = SignupSerializer(data=request.data)
         if serializer.is_valid():
-            """If the validation success, it will created a new user."""
+            # Check if the username already exists
+            username = serializer.validated_data.get('username')
+            if CustomUser.objects.filter(username=username).exists():
+                res = {'status': status.HTTP_400_BAD_REQUEST, 'error': 'Duplicate username'}
+                return Response(res, status=status.HTTP_400_BAD_REQUEST)
+
+            # If the username is unique, create a new user
             serializer.save()
-            # user = User.objects.get(request.POST['username'])
-            # Token.objects.get_or_create(user=user)
-            # TODO: here we should create user corresponding object ( student , professor or ta)
             res = {'status': status.HTTP_201_CREATED}
             return Response(res, status=status.HTTP_201_CREATED)
+
         res = {'status': status.HTTP_400_BAD_REQUEST, 'data': serializer.errors}
         return Response(res, status=status.HTTP_400_BAD_REQUEST)
 
@@ -32,6 +38,8 @@ class SignUp(APIView):
 class Login(APIView):
     permission_classes = (AllowAny,)
 
+    @swagger_auto_schema(request_body=LoginSerializer,
+                         responses={200: 'Login Successful', 401: 'Unauthorized', 400: 'Bad Request'})
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -66,6 +74,7 @@ class Login(APIView):
 class Logout(APIView):
     permission_classes = (IsAuthenticated,)
 
+    @swagger_auto_schema(responses={200: 'Logout Successful'})
     def post(self, request):
         request.user.auth_token.delete()
         log_out(request)

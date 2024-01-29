@@ -150,7 +150,8 @@ AWS_SECRET_ACCESS_KEY = 'your-minio-secret-key'  # Replace with your MinIO secre
 AWS_STORAGE_BUCKET_NAME = 'your-minio-bucket'  # Replace with your bucket name
 AWS_S3_ENDPOINT_URL = 'http://localhost:9000'  # URL to your MinIO server it should be  your-minio-server-url
 AWS_S3_REGION_NAME = 'us-east-1'  # Region name, can be anything for MinIO
-AWS_S3_SIGNATURE_VERSION = 's3v4'  # Signature version to use
-AWS_S3_CUSTOM_DOMAIN = None
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False  # This will make sure that the file URL does not have unnecessary parameters.

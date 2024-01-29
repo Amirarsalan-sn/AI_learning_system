@@ -1,9 +1,13 @@
 from rest_framework import serializers
+
+from ai_education.settings import DATA_UPLOAD_MAX_MEMORY_SIZE
 from .models import Submission, Discussion, Reply, Exercise, Grade, ClassRoom
 from userApp.serializers import UserSerializer, UserSafeSerializer
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    submission_file = serializers.FileField(max_length=DATA_UPLOAD_MAX_MEMORY_SIZE, allow_empty_file=True, required=False)
+
     class Meta:
         model = Submission
         fields = '__all__'  # You can specify fields explicitly if needed
@@ -39,6 +43,8 @@ class DiscussionDetailedSerializer(serializers.ModelSerializer):
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
+    exercise_file = serializers.FileField(max_length=DATA_UPLOAD_MAX_MEMORY_SIZE, allow_empty_file=True, required=False)
+
     class Meta:
         model = Exercise
         fields = '__all__'  # You can specify fields explicitly if needed
