@@ -91,7 +91,7 @@ class GraphProcessing:
         num_of_nodes = secrets.randbelow(10) + 7
         adjacent_matrix = [[0 for x in range(num_of_nodes)] for x in range(num_of_nodes)]
         nodes_list = [x for x in range(1, num_of_nodes)]
-        secrets.SystemRandom().shuffle(nodes_list)
+        random.SystemRandom().shuffle(nodes_list)
         process_list = [0]
         while process_list:
             parent = process_list.pop(0)
