@@ -20,9 +20,9 @@ function AlgoView() {
     const fetchNewInstance = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('/api/your-endpoint', { params: { algorithm } });
-            setAdjacencyMatrix(response.data.adjacencyMatrix);
-            setSequence(response.data.sequence);
+            const response = await axios.get('http://127.0.0.1:8000/api/graph/', { params: { algorithm } });
+            setAdjacencyMatrix(response.data.adjecencymatrix);
+            setSequence(response.data.visitseq);
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);

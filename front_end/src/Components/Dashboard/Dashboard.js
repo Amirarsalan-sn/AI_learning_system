@@ -159,6 +159,12 @@ export default function Dashboard() {
                                 </ListItemIcon>
                                 <ListItemText primary="الگوریتم های مصور"/>
                             </ListItemButton>
+                            <ListItemButton onClick={() => navigate('/dashboard/class/1/quiz/1')}>
+                                <ListItemIcon>
+                                    <BarChartIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="پرسشنامه فعلی"/>
+                            </ListItemButton>
                         </React.Fragment>
                     </List>
                 </Drawer>
