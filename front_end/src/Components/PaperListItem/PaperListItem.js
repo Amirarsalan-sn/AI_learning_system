@@ -2,9 +2,9 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-const PaperListItem = ({ id, title, body, date }) => {
+const PaperListItem = ({ id, title, body, date ,onclick}) => {
     return (
-        <Paper elevation={3} sx={{ p: 2, mb: 2, borderRadius: 2 }}>
+        <Paper elevation={3} sx={{ p: 2, mb: 2, borderRadius: 2 }} onClick={onclick}>
             <Typography variant="h6" mb={1} fontWeight="bold">
                 {title}
             </Typography>
