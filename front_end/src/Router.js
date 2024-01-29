@@ -41,6 +41,9 @@ const Tree = lazy(() =>
 const TreeWrapper = lazy(() =>
     import("./Components/Graph/TreeWrapper")
 );
+
+import Quiz from './Components/Quiz/Quiz'
+
 const adjacencyMatrix = [
     [0, 1, 1, 0],
     [1, 0, 0, 1],
@@ -70,6 +73,7 @@ const Router = () => {
                 {path: "class/:classId/discussion/:discussionId", element:<Discussion/>},
                 {path: "/dashboard/class/:classId/assignment/:assId", element:<UploadFile/>},
                 {path: "/dashboard/algoview/", element:<AlgoView/>},
+                {path: "/dashboard/class/:classId/quiz/:qid", element:<Quiz/>},
             ]
         },
 
