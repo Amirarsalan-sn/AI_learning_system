@@ -5,10 +5,10 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import ButtonBar from "../ButtonBar/ButtonBar";
 import Typography from '@mui/material/Typography';
 import axios from "axios";
 import useGet from "../../Hooks/useGet";
+import ButtonBar from '../ButtonBar/ButtonBar'
 function numberToPersianText(number) {
     const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
 
@@ -100,13 +100,15 @@ function Quiz() {
             body: JSON.stringify({
                 answers: answers
             })
+
         };
         fetch('http://127.0.0.1:8000/api/submitbulk/', requestOptions)
             .then(response => response.json())
             .then(data => setAnswers({}));
+        submitcheck.has_submitted = 1;
     };
     const handleNext = () => {
-        if (currentBlock < 9) {
+        if (currentBlock < 2) {
             setCurrentBlock(currentBlock + 1);
             window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
         }
@@ -149,8 +151,8 @@ function Quiz() {
                             >
                                 <Typography variant="h5" mt={3} mb={3}>
 
-                                    بلوک {numberToPersianText(data.number)} از {numberToPersianText(9)}</Typography>
-                                <LinearProgress variant="determinate" value={Number((data.number / 9) * 100)}/>
+                                    بلوک {numberToPersianText(data.number)} از {numberToPersianText(2)}</Typography>
+                                <LinearProgress variant="determinate" value={Number((data.number / 2) * 100)}/>
                                 <BlockInfo data={data}/>
                             </Paper>
                         </Grid>
@@ -198,10 +200,10 @@ function Quiz() {
                                 <ButtonBar
                                     text1={'قبلی'}
                                     text2={'بعدی'}
-                                    text3={currentBlock === 9 ? "ثبت" : "بعدی" }
+                                    text3={currentBlock === 2 ? "ثبت" : "بعدی" }
                                     func1={handlePrevious}
                                     func2={handleNext}
-                                    func3={currentBlock === 9 ? handleSubmit : handleNext}
+                                    func3={currentBlock === 2 ? handleSubmit : handleNext}
                                     isVisable1={currentBlock !== 1}
                                     isVisable2={false}
                                     isVisable3={true}

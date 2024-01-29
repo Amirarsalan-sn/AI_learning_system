@@ -7,6 +7,7 @@ import NewDiscussion from "./Components/Discussion/NewDiscussion";
 import UploadFile from "./Components/File/UploadFile";
 import DownloadFile from "./Components/File/DownloadFile";
 import AlgoView from "./Components/AlgoView/AlgoView";
+import Quiz from './Components/Quiz/Quiz'
 
 const Navbar = lazy(() =>
     import("./Components/Navbar/Navbar")
@@ -42,7 +43,6 @@ const TreeWrapper = lazy(() =>
     import("./Components/Graph/TreeWrapper")
 );
 
-import Quiz from './Components/Quiz/Quiz'
 
 const adjacencyMatrix = [
     [0, 1, 1, 0],
